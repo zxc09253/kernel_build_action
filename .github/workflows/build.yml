@@ -1,4 +1,3 @@
-# 小米15 Ultra HyperOS 3.0.8 安卓16 专用SUSFS内核编译配置（100%成功最终版）
 name: Build Kernel
 on:
   push:
@@ -12,25 +11,20 @@ jobs:
       - name: Build Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          # 小米15 Ultra 官方内核源码地址
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource
-          # 对应内核分支（安卓15源码，完美兼容安卓16系统）
           kernel-branch: ishtar-6.6-android15
-          # 小米15 Ultra 专属编译配置
           config: ishtar_user_defconfig
-          # 处理器架构固定arm64
           arch: arm64
-          
-          # 【终极修复】用安卓14的工具链，分支真实存在，彻底解决克隆失败报错
-          aosp-gcc: true
-          aosp-clang: true
-          android-version: 14
-          
-          # 集成带SUSFS的KernelSU，完整root隐藏功能
+          aosp-clang: false
+          aosp-gcc: false
+          # 正确的自定义工具链变量名
+          clang-url: https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/tags/android-14.0.0_r50/clang-r487747c.tar.gz
+          gcc64-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
+          gcc32-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
+          android-version: 14        # 与工具链版本匹配
           ksu: true
           ksu-url: https://github.com/SukiSU-Ultra/SukiSU-Ultra
           ksu-version: susfs-dev
-          # 自动打包成可直接刷入的zip包
           anykernel3: true
 
 
