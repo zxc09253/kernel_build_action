@@ -12,16 +12,16 @@ jobs:
         uses: dabao1955/kernel_build_action@main
         with:
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource
-          kernel-branch: ishtar-6.6-android15
+          # 根据实际存在的分支修改，这里示例为 ishtar-6.6
+          kernel-branch: ishtar-6.6
           config: ishtar_user_defconfig
           arch: arm64
           aosp-clang: false
           aosp-gcc: false
-          # 正确的自定义工具链变量名
           clang-url: https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/tags/android-14.0.0_r50/clang-r487747c.tar.gz
           gcc64-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
           gcc32-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
-          android-version: 14        # 与工具链版本匹配
+          android-version: 14
           ksu: true
           ksu-url: https://github.com/SukiSU-Ultra/SukiSU-Ultra
           ksu-version: susfs-dev
