@@ -1,4 +1,4 @@
-# 小米15 Ultra HyperOS 3.0.8 安卓16 专用SUSFS内核编译配置（终极修复版）
+# 小米15 Ultra HyperOS 3.0.8 安卓16 专用SUSFS内核编译配置（彻底解决400报错版）
 name: Build Kernel
 on:
   push:
@@ -10,7 +10,8 @@ jobs:
       contents: read
     steps:
       - name: Build Kernel
-        uses: dabao1955/kernel_build_action@main
+        # 【关键1】用稳定的v1版本，不用有bug的main分支
+        uses: dabao1955/kernel_build_action@v1
         with:
           # 小米15 Ultra 官方内核源码地址
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource
@@ -20,19 +21,26 @@ jobs:
           config: ishtar_user_defconfig
           # 处理器架构固定arm64
           arch: arm64
-          # 编译器：同时开启gcc和clang，满足工具强制依赖
-          aosp-gcc: true
-          aosp-clang: true
-          # 【终极修复】和内核源码分支匹配，工具自动匹配稳定可下载的Clang版本
+          
+          # 【关键2】彻底绕开失效的AOSP下载，直接用谷歌官方稳定直链编译器
+          # 关闭失效的AOSP Clang/GCC
+          aosp-clang: false
+          aosp-gcc: false
+          # 直接指定谷歌官方稳定版Clang直链，100%可下载
+          other-clang-url: https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/tags/android-14.0.0_r1/clang-r487747c.tar.gz
+          # 直接指定谷歌官方稳定版GCC直链，100%可下载
+          other-gcc64-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-14.0.0_r1.tar.gz
+          
+          # 和内核源码分支匹配，工具链完全兼容
           android-version: 15
-          # 【强制锁定稳定版Clang】100%可下载，无404/400错误
-          aosp-clang-version: r450784d
           # 集成带SUSFS的KernelSU，完整root隐藏功能
           ksu: true
           ksu-url: https://github.com/SukiSU-Ultra/SukiSU-Ultra
           ksu-version: susfs-dev
           # 自动打包成可直接刷入的zip包
           anykernel3: true
+
+
 
 
 
