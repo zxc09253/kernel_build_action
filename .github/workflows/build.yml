@@ -12,8 +12,7 @@ jobs:
         uses: dabao1955/kernel_build_action@main
         with:
           kernel-url: https://github.com/MiCode/Xiaomi_Kernel_OpenSource
-          # 根据实际存在的分支修改，这里示例为 ishtar-6.6
-          kernel-branch: ishtar-6.6
+          kernel-branch: xuanyuan-v-oss   # 改为正确的分支
           config: ishtar_user_defconfig
           arch: arm64
           aosp-clang: false
