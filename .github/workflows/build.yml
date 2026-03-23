@@ -1,4 +1,4 @@
-# 小米15 Ultra HyperOS 3.0.8 安卓16 专用SUSFS内核编译配置（100%可运行最终版）
+# 小米15 Ultra HyperOS 3.0.8 安卓16 专用SUSFS内核编译配置（仅修复GCC报错版）
 name: Build Kernel
 on:
   push:
@@ -10,7 +10,6 @@ jobs:
       contents: read
     steps:
       - name: Build Kernel
-        # 改回官方main分支，解决版本不存在的报错
         uses: dabao1955/kernel_build_action@main
         with:
           # 小米15 Ultra 官方内核源码地址
@@ -22,12 +21,14 @@ jobs:
           # 处理器架构固定arm64
           arch: arm64
           
-          # 【核心修复1】彻底关闭失效的AOSP自动下载，完全绕开400报错
+          # 彻底关闭失效的AOSP自动下载，完全绕开400报错
           aosp-clang: false
           aosp-gcc: false
-          # 【核心修复2】直接用谷歌官方稳定版编译器直链，100%可下载，工具原生支持
+          # 直接用谷歌官方稳定版编译器直链，100%可下载，工具原生支持
           other-clang-url: https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/tags/android-14.0.0_r50/clang-r487747c.tar.gz
           other-gcc64-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
+          # 【仅新增这一行修复报错】补全32位GCC直链，避免工具自动拉取不存在的分支
+          other-gcc32-url: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-14.0.0_r50.tar.gz
           
           # 和内核源码分支匹配，工具链完全兼容
           android-version: 15
@@ -37,6 +38,7 @@ jobs:
           ksu-version: susfs-dev
           # 自动打包成可直接刷入的zip包
           anykernel3: true
+
 
 
 
